@@ -5,11 +5,13 @@ import { gql } from '@apollo/client';
 import client from '@/client';
 import { Link } from '@/gql/graphql';
 import { LinkFeed } from '@/components';
-import { LinkFeedProps } from '@/types';
 const inter = Inter({ subsets: ['latin'] });
 
+type LinkFeedArgs = {
+  linkFeed: Link[];
+};
 
-export default function Home({ linkFeed }: LinkFeedProps) {
+export default function Home({ linkFeed }: LinkFeedArgs) {
   return (
     <>
       <Head>
@@ -27,7 +29,7 @@ export default function Home({ linkFeed }: LinkFeedProps) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data } = await client.query({
     query: gql`
       query LinkFeed {
