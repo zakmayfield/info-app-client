@@ -1,14 +1,8 @@
 import Head from 'next/head';
-import { Inter } from '@next/font/google';
+import Link from 'next/link';
 import styles from '@/styles/Home.module.css';
-import { gql } from '@apollo/client';
-import { client } from '@/Client';
-import { Link } from '@/gql/graphql';
-import { LinkFeed } from '@/components';
-import { LinkFeedProps } from '@/types';
-const inter = Inter({ subsets: ['latin'] });
 
-export default function Home({ linkFeed }: LinkFeedProps) {
+export default function Home() {
   return (
     <>
       <Head>
@@ -18,42 +12,15 @@ export default function Home({ linkFeed }: LinkFeedProps) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <main className={styles.main}>
-        <div>
-          <LinkFeed feed={linkFeed} />
-        </div>
+        <ul>
+          <li>
+            <Link href='/link-feed-ssr'>Server-side rendering</Link>
+          </li>
+          <li>
+            <Link href='/link-feed-csr'>Client-side rendering</Link>
+          </li>
+        </ul>
       </main>
     </>
   );
-}
-
-export async function getStaticProps() {
-  const { data } = await client.query({
-    query: gql`
-      query LinkFeed {
-        linkFeed {
-          id
-          description
-          url
-          postedBy {
-            id
-            name
-          }
-          comments {
-            id
-            body
-            postedBy {
-              id
-              name
-            }
-          }
-        }
-      }
-    `,
-  });
-
-  return {
-    props: {
-      linkFeed: data.linkFeed,
-    },
-  };
 }

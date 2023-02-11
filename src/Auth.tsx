@@ -31,14 +31,6 @@ function useProvideAuth() {
     }
   }, [authToken]);
 
-  // const authLink = setContext((_, { headers }) => {
-  //   return {
-  //     headers: {
-  //       authorization: token ? `Bearer ${authToken}` : '',
-  //     },
-  //   };
-  // });
-
   const authMiddleware = new ApolloLink((operation, forward) => {
     const token = window.localStorage.getItem('token');
 

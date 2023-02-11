@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 export function SignUp() {
   const router = useRouter();
-  const { signUp } = useAuth();
+  // const { signUp } = useAuth();
 
   const onSuccess = (data: SignUpArgs) => {
     const { name, email, password } = data;
@@ -16,7 +16,8 @@ export function SignUp() {
       password,
     };
 
-    signUp(payload).then(() => router.push('/dashboard'));
+    console.log('payload', payload)
+    // signUp(payload).then(() => router.push('/dashboard'));
   };
 
   const {

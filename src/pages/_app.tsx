@@ -1,27 +1,30 @@
-import { AuthProvider } from '@/Auth';
-import ClientProvider from '@/Client';
-import type { AppProps } from 'next/app';
+import { NextPage } from 'next';
+import { AppProps } from 'next/app';
+import { ApolloProvider } from '@apollo/client';
+
 import { Nav } from '@/components';
+
+import { useApollo } from '../lib/apollo';
+
 import { Inter } from '@next/font/google';
 import '@/styles/globals.css';
+
 const inter = Inter({ subsets: ['latin'] });
 
-export default function App({ Component, pageProps }: AppProps) {
+const App: NextPage<AppProps> = ({ Component, pageProps }) => {
+  const apolloClient = useApollo(pageProps);
+
   return (
-    <>
-      <AuthProvider>
-      <ClientProvider>
-
-        <style jsx global>{`
-          html {
-            font-family: ${inter.style.fontFamily};
-          }
-        `}</style>
-        <Nav />
-        <Component {...pageProps} />
-
-      </ClientProvider>
-      </AuthProvider>
-    </>
+    <ApolloProvider client={apolloClient}>
+      <style jsx global>{`
+        html {
+          font-family: ${inter.style.fontFamily};
+        }
+      `}</style>
+      <Nav />
+      <Component {...pageProps} />
+    </ApolloProvider>
   );
-}
+};
+
+export default App;

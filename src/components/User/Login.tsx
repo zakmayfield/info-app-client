@@ -5,7 +5,7 @@ import useLoginForm from '@/hooks/useLoginForm';
 
 export function Login() {
   const router = useRouter();
-  const { login } = useAuth();
+  // const { login } = useAuth();
 
   const onSuccess = (data: LoginArgs) => {
     const { email, password } = data;
@@ -15,7 +15,9 @@ export function Login() {
       password,
     };
 
-    login(payload).then(() => router.push('/dashboard'));
+    console.log('payload', payload)
+
+    // login(payload).then(() => router.push('/dashboard'));
   };
 
   const {
