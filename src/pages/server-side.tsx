@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { Inter } from '@next/font/google';
 import styles from '@/styles/Home.module.css';
 import { gql } from '@apollo/client';
-import client from '@/client';
+import { client } from '@/Client';
 import { Link } from '@/gql/graphql';
 import { LinkFeed } from '@/components';
 const inter = Inter({ subsets: ['latin'] });

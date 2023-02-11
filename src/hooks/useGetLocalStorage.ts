@@ -10,11 +10,11 @@ export default function useGetLocalStorage(
     }
 
     try {
-      // Get from local storage by key
       const item = window.localStorage.getItem(key);
       return item ? item : initialValue;
+
     } catch (error) {
-      // If error also return initialValue
+
       console.log(error);
       return initialValue;
     }

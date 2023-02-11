@@ -1,14 +1,10 @@
 import { Link } from '@/gql/graphql';
-import useGetLocalStorage from '@/hooks/useGetLocalStorage';
 import { GET_USER } from '@/schema';
 import { useQuery } from '@apollo/client';
 
 //when this request gets made i need to sedn along a req header to ensure i have a token.
 
 export function Dashboard() {
-  const token = useGetLocalStorage('token');
-
-  console.log('token :::', token)
   const { data, loading, error } = useQuery(GET_USER);
 
   if (loading) return <div>loading...</div>;

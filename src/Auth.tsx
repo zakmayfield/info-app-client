@@ -1,35 +1,61 @@
-import { useState, useContext, createContext, PropsWithChildren } from 'react';
+import {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  PropsWithChildren,
+} from 'react';
 import {
   ApolloClient,
-  ApolloProvider,
-  HttpLink,
   ApolloLink,
+  ApolloProvider,
+  from,
+  HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
-  concat,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import { LOGIN } from '@/schema';
-import { LoginArgs, AuthContext, AuthHeaders } from '@/types';
+import { LOGIN, SIGN_UP } from '@/schema';
+import { LoginArgs, AuthContext, SignUpArgs } from '@/types';
+import { setContext } from '@apollo/client/link/context';
+import useGetLocalStorage from './hooks/useGetLocalStorage';
 
 const authContext = createContext<AuthContext>(null!);
 
 function useProvideAuth() {
   const [authToken, setAuthToken] = useState('');
 
-  function getAuthHeaders(): AuthHeaders {
-    let token: string = authToken;
+  useEffect(() => {
+    if (authToken) {
+      window.localStorage.setItem('token', authToken);
+    }
+  }, [authToken]);
 
-    return {
-      authorization: token ? `Bearer ${token}` : '',
-    };
-  }
+  // const authLink = setContext((_, { headers }) => {
+  //   return {
+  //     headers: {
+  //       authorization: token ? `Bearer ${authToken}` : '',
+  //     },
+  //   };
+  // });
+
+  const authMiddleware = new ApolloLink((operation, forward) => {
+    const token = window.localStorage.getItem('token');
+
+    operation.setContext(({ headers = {} }) => ({
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${authToken}` : '',
+      },
+    }));
+
+    return forward(operation);
+  });
 
   function createApolloClient(): ApolloClient<NormalizedCacheObject> {
     const httpLink = new HttpLink({
-      uri: `http://localhost:4000/graphql`,
+      uri: process.env.NEXT_PUBLIC_API_URL,
       credentials: 'same-origin',
-      headers: getAuthHeaders(),
     });
 
     const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -42,7 +68,8 @@ function useProvideAuth() {
     });
 
     return new ApolloClient({
-      link: concat(errorLink, httpLink),
+      // link: authMiddleware.concat(errorLink).concat(httpLink),
+      link: from([errorLink, authMiddleware, httpLink]),
       cache: new InMemoryCache(),
       name: 'collars-client-v3',
       defaultOptions: {
@@ -68,13 +95,37 @@ function useProvideAuth() {
 
       setAuthToken(token);
 
-      localStorage.setItem('token', token)
+      const { login } = data
+
+      return login
+    }
+  }
+
+  async function signUp({ name, email, password }: SignUpArgs) {
+    const client = createApolloClient();
+
+    const { data } = await client.mutate({
+      mutation: SIGN_UP,
+      variables: { name, email, password },
+    });
+
+    console.log(`::: signUp :::`, data.signUp);
+
+    if (data?.signUp?.token) {
+      let token: string = data.signUp.token;
+
+      setAuthToken(token);
+
+      const { signUp } = data;
+
+      return signUp;
     }
   }
 
   return {
     createApolloClient,
     login,
+    signUp,
   };
 }
 

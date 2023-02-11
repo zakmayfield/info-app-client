@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -105,6 +106,7 @@ export type MutationUpdateLinkArgs = {
 export type Query = {
   __typename?: 'Query';
   comment?: Maybe<Comment>;
+  getUser: User;
   link?: Maybe<Link>;
   linkComments?: Maybe<Link>;
   linkFeed: Array<Maybe<Link>>;
@@ -140,3 +142,11 @@ export type User = {
   links?: Maybe<Array<Maybe<Link>>>;
   name: Scalars['String'];
 };
+
+export type LinkFeedQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LinkFeedQuery = { __typename?: 'Query', linkFeed: Array<{ __typename?: 'Link', id: string, description: string, url: string, postedBy?: { __typename?: 'User', id: string, name: string } | null, comments?: Array<{ __typename?: 'Comment', id: string, body: string, postedBy?: { __typename?: 'User', id: string, name: string } | null } | null> | null } | null> };
+
+
+export const LinkFeedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LinkFeed"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"linkFeed"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"postedBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"body"}},{"kind":"Field","name":{"kind":"Name","value":"postedBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<LinkFeedQuery, LinkFeedQueryVariables>;
