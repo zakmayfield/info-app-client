@@ -20,6 +20,8 @@ const getToken = (req?: IncomingMessage) => {
     req ? req.headers.cookie ?? '' : document.cookie
   );
 
+  console.log('parsedCookie :::', parsedCookie)
+
   return parsedCookie[COOKIES_TOKEN_NAME];
 };
 
