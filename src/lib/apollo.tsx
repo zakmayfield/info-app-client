@@ -17,6 +17,7 @@ export const COOKIES_TOKEN_NAME = 'jwt';
 
 const getToken = (req?: IncomingMessage) => {
   const parsedCookie = cookie.parse(
+    // document.cookie // Returns the HTTP cookies that apply to the Document. If there are no cookies or cookies can't be applied to this resource, the empty string will be returned.
     req ? req.headers.cookie ?? '' : document.cookie
   );
 

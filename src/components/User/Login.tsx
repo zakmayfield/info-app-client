@@ -2,10 +2,15 @@ import { useAuth } from '@/Auth';
 import { LoginArgs } from '@/types';
 import { useRouter } from 'next/router';
 import useLoginForm from '@/hooks/useLoginForm';
+import { useMutation } from '@apollo/client';
+import { LOGIN } from '@/schema';
+
 
 export function Login() {
   const router = useRouter();
   // const { login } = useAuth();
+
+  const [login, { data }] = useMutation(LOGIN);
 
   const onSuccess = (data: LoginArgs) => {
     const { email, password } = data;
@@ -15,10 +20,12 @@ export function Login() {
       password,
     };
 
-    console.log('payload', payload)
-
-    // login(payload).then(() => router.push('/dashboard'));
+    login({ variables: { email, password } });
   };
+
+  if (data) {
+    console.log('data from login.tsx :::', data);
+  }
 
   const {
     register,
