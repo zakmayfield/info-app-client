@@ -1,5 +1,4 @@
 import { Link } from '@/gql/graphql';
-import { LinkItem } from '@/components';
 
 type LinkFeedArgs = {
   feed: Link[];
@@ -10,7 +9,12 @@ export function LinkFeed({ feed }: LinkFeedArgs) {
   return (
     <section>
       {feed.map((link: Link) => {
-        return <LinkItem key={link.id} link={link} />
+        return (
+          <div key={link.id}>
+            <h2>{link.url}</h2>
+            <p>{link.description}</p>
+          </div>
+        );
       })}
     </section>
   );
