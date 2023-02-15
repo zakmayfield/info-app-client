@@ -10,17 +10,16 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <AuthProvider>
-      <ClientProvider>
 
         <style jsx global>{`
           html {
             font-family: ${inter.style.fontFamily};
           }
         `}</style>
+
         <Nav />
         <Component {...pageProps} />
 
-      </ClientProvider>
       </AuthProvider>
     </>
   );

@@ -15,13 +15,14 @@ export interface SignUpArgs {
 
 export type AuthContext = {
   login: ({ email, password }: LoginArgs) => Promise<AuthContextReturn>;
-  signUp: ({ name, email, password }: SignUpArgs) => Promise<AuthContextReturn>;
+  // signUp: ({ name, email, password }: SignUpArgs) => Promise<AuthContextReturn>;
   createApolloClient: () => ApolloClient<NormalizedCacheObject>;
+  // getAuth: () => Promise<{}>;
 };
 
 export type AuthContextReturn = {
-  token: string;
   user: User;
+  token: string;
 };
 
 

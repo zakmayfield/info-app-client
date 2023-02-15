@@ -25,27 +25,15 @@ const authContext = createContext<AuthContext>(null!);
 function useProvideAuth() {
   const [authToken, setAuthToken] = useState('');
 
-  useEffect(() => {
-    if (authToken) {
-      window.localStorage.setItem('token', authToken);
-    }
-  }, [authToken]);
-
-  // const authLink = setContext((_, { headers }) => {
-  //   return {
-  //     headers: {
-  //       authorization: token ? `Bearer ${authToken}` : '',
-  //     },
-  //   };
-  // });
-
   const authMiddleware = new ApolloLink((operation, forward) => {
     const token = window.localStorage.getItem('token');
+
+    console.log('::: token/authMiddleware :::', token)
 
     operation.setContext(({ headers = {} }) => ({
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${authToken}` : '',
+        authorization: token ? `Bearer ${token}` : '',
       },
     }));
 
@@ -88,15 +76,16 @@ function useProvideAuth() {
       variables: { email, password },
     });
 
-    console.log(`::: login :::`, data.login);
-
     if (data?.login?.token) {
       let token: string = data.login.token;
-
+      
       setAuthToken(token);
-
+      window.localStorage.setItem('token', token)
+      
       const { login } = data
-
+      
+      console.log(`::: direct client mutation/login :::`, login);
+      
       return login
     }
   }
@@ -124,8 +113,7 @@ function useProvideAuth() {
 
   return {
     createApolloClient,
-    login,
-    signUp,
+    login
   };
 }
 

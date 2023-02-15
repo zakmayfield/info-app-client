@@ -1,8 +1,7 @@
 import { Link } from '@/gql/graphql';
 import { GET_USER } from '@/schema';
 import { useQuery } from '@apollo/client';
-
-//when this request gets made i need to sedn along a req header to ensure i have a token.
+import { LinkFeed } from './LinkFeed';
 
 export function Dashboard() {
   const { data, loading, error } = useQuery(GET_USER);
@@ -20,15 +19,7 @@ export function Dashboard() {
       <h3>{user.email}</h3>
 
       <p>{user.name}s Links:</p>
-      {user.links &&
-        user.links.map((link: Link) => {
-          return (
-            <div key={link.id}>
-              <p>{link.url}</p>
-              <p>{link.description}</p>
-            </div>
-          );
-        })}
+      {user.links && <LinkFeed feed={user.links} />}
     </>
   );
 }
