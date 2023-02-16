@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/client';
 import { useAuth } from '@/Auth';
 
 export function Login() {
-  const {login} = useAuth()
+  const { login } = useAuth();
   // const [login, { data, error }] = useMutation(LOGIN);
 
   const router = useRouter();
@@ -47,16 +47,34 @@ export function Login() {
   // if (data && data?.login?.user) name = data.login.user.name;
 
   return (
-    <form onSubmit={onSubmit}>
-      <input {...register('email')} type='text' placeholder='email' />
-      
-      <input {...register('password')} type='text' placeholder='password' />
+    <>
+      <hgroup>
+        <h1>Log In</h1>
+        <h2>Info App Incorporated</h2>
+      </hgroup>
 
-      <div>
-        <button type='submit' style={{ width: '100%' }}>Login</button>
-      </div>
-      {/* {error && error.message && <div>{error.message}</div>}
+      <form onSubmit={onSubmit}>
+        <input
+          {...register('email')}
+          type='text'
+          placeholder='email'
+          aria-label='login'
+        />
+
+        <input
+          {...register('password')}
+          type='text'
+          placeholder='password'
+          aria-label='password'
+        />
+
+        <button type='submit' style={{ width: '100%' }}>
+          Login
+        </button>
+
+        {/* {error && error.message && <div>{error.message}</div>}
       {data && data?.login?.user?.name && <div>✅ Hello, {name}</div>} */}
-    </form>
+      </form>
+    </>
   );
 }

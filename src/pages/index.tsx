@@ -5,7 +5,6 @@ import { gql } from '@apollo/client';
 import { client } from '@/Client';
 import { LinkFeed } from '@/components';
 import { LinkFeedProps } from '@/types';
-const inter = Inter({ subsets: ['latin'] });
 
 export default function Home({ linkFeed }: LinkFeedProps) {
   return (
